@@ -14,7 +14,10 @@
 #
 LOCAL_PATH := $(call my-dir)
 
-common_src_files := \
+include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES := \
+	../android/statvfs.c \
 	buffer.c \
 	cuse_lowlevel.c \
 	fuse.c \
@@ -30,38 +33,19 @@ common_src_files := \
 	mount_util.c \
 	ulockmgr.c
 
-common_c_includes := \
+LOCAL_C_INCLUDES := \
 	external/fuse/android \
 	external/fuse/include
 
-common_shared_libraries := \
+LOCAL_SHARED_LIBRARIES := \
 	libutils
 
-common_cflags := \
+LOCAL_CFLAGS := \
 	-D_FILE_OFFSET_BITS=64 \
 	-DFUSE_USE_VERSION=26 \
     -fno-strict-aliasing
 
-common_ldflags := \
-     -Wl,--version-script,$(LOCAL_PATH)/fuse_versionscript
-
-include $(CLEAR_VARS)
 LOCAL_MODULE := libfuse
 LOCAL_MODULE_TAGS := optional
-LOCAL_SRC_FILES := $(common_src_files)
-LOCAL_C_INCLUDES := $(common_c_includes)
-LOCAL_SHARED_LIBRARIES := $(common_shared_libraries)
-LOCAL_CFLAGS := $(common_cflags) -fPIC
-LOCAL_LDFLAGS := $(common_ldflags)
-LOCAL_CLANG := true
-include $(BUILD_SHARED_LIBRARY)
 
-include $(CLEAR_VARS)
-LOCAL_MODULE := libfuse_static
-LOCAL_MODULE_TAGS := optional
-LOCAL_SRC_FILES := $(common_src_files)
-LOCAL_C_INCLUDES := $(common_c_includes)
-LOCAL_STATIC_LIBRARIES := $(common_shared_libraries)
-LOCAL_CFLAGS := $(common_cflags)
-LOCAL_CLANG := true
 include $(BUILD_STATIC_LIBRARY)
